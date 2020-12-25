@@ -1,0 +1,177 @@
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+
+{ config, pkgs, ... }:
+
+{
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ../modules/persistence.nix
+      ../modules/users.nix
+      ../modules/common.nix
+    ];
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.loader.grub.extraConfig = "serial --unit=1 --speed=115200 --word=8 --parity=no --stop=1";
+  boot.kernelParams = [
+    "console=ttyS1,115200n8"
+  ];
+
+  networking.hostName = "fred"; # Define your hostname.
+
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  networking.useDHCP = false;
+  networking.interfaces.eno1.useDHCP = false;
+  networking.interfaces.eno3.useDHCP = false;
+  networking.interfaces.eno4.useDHCP = false;
+
+  # Needed for zfs
+  networking.hostId = "718ec992";
+
+  # Required for fred's network card, unfortunately
+  # The import of not-detected.nix in the hardware-configuration should also do this
+  # but we enable it here explicitly for piece of mind
+  hardware.enableRedistributableFirmware = true;
+
+  networking.defaultGateway = "131.174.41.1";
+  networking.nameservers = [
+    "131.174.30.40"
+    "131.174.16.131"
+  ];
+  networking.interfaces.eno2 = {
+    useDHCP = false;
+    ipv4.addresses = [
+      {
+        address = "131.174.41.17";
+        prefixLength = 25;
+      }
+    ];
+  };
+
+  # Enable the OpenSSH daemon.
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = false;
+    hostKeys = [
+      {
+        path = "/persist/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+    ];
+  };
+
+  # Persist directories for the services fred runs
+  environment.persistence."/persist".links = [
+    "/var/lib/acme"
+  ];
+  environment.persistence."/persist".mounts = [
+    "/var/lib/hydra"
+  ];
+  services.postgresql.dataDir = "/persist/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
+
+  nixpkgs.overlays =
+    let
+      modifyHydra = packagesNew: packagesOld: {
+        hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (old: {
+            patches = (old.patches or []) ++ [
+              # Use GitHub tokens for their API authentication
+              (packagesNew.fetchurl {
+                  url = "https://raw.githubusercontent.com/dhall-lang/dhall-lang/baaac8ce151c5fc876377f784e9c32ace963a56f/nixops/hydra.patch";
+                  hash = "sha256:1g3bsrs0xx7231phjgyna4n4x465ipx7sjd7k9wf8yrwdi7f0k3z";
+                }
+              )
+              # Allow local files to be used for jobset configuration
+              (packagesNew.fetchurl {
+                  url = "https://raw.githubusercontent.com/dhall-lang/dhall-lang/baaac8ce151c5fc876377f784e9c32ace963a56f/nixops/no-restrict-eval.patch";
+                  hash = "sha256:09pw64ppjj34n5vd3b81yydbhybb6y4f15angsbrzmpmifvmsiws";
+                }
+              )
+              # Enable a shields.io compatible badge
+              (packagesNew.fetchpatch {
+                  url = "https://github.com/NixOS/hydra/commit/c75523fc088e7903010ea500da55af31c170512d.patch";
+                  sha256 = "09sk79rab7a4lb9vxz0pqcik5ivypl9bmjac3b7lzzbsxvjl8bpi";
+                }
+              )
+            ];
+          }
+        );
+      };
+
+    in
+      [ modifyHydra ];
+
+  environment.etc."hydra/concrexit.json".text = builtins.toJSON (import ./repo.nix "concrexit");
+  environment.etc."hydra/servers.json".text = builtins.toJSON (import ./repo.nix "servers");
+  environment.etc."hydra/jobsets.nix".text = builtins.readFile ./jobsets.nix;
+
+  environment.etc."hydra/machines".text = ''
+    localhost x86_64-linux,builtin - 8 1 local,big-parallel,kvm,nixos-test
+  '';
+
+  services.hydra = {
+    buildMachinesFiles = [ "/etc/hydra/machines" ];
+
+    enable = true;
+
+     extraConfig = ''
+       <githubstatus>
+         jobs = .*:.*:.*-release
+         inputs = src
+         authorization = svthalia
+         useShortContext = 1
+       </githubstatus>
+       evaluator_workers = 1
+     '';
+
+    hydraURL = "https://hydra.technicie.nl";
+    useSubstitutes = false;
+
+    listenHost = "127.0.0.1";
+
+    notificationSender = "noreply@technicie.nl";
+
+    package = pkgs.hydra-unstable;
+  };
+
+  # systemd.services.nix-gc =
+  #     { description = "Nix Garbage Collector";
+  #       script = "exec ${config.nix.package.out}/bin/nix-collect-garbage ${cfg.options}";
+  #       startAt = optional cfg.automatic cfg.dates;
+  #     };
+
+  security.acme.email = "www@thalia.nu";
+  security.acme.acceptTerms = true;
+
+  services.nginx = {
+    enable = true;
+    recommendedGzipSettings = true;
+    recommendedOptimisation = true;
+    recommendedTlsSettings = true;
+    recommendedProxySettings = true;
+    virtualHosts."hydra.technicie.nl" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/".proxyPass = "http://127.0.0.1:3000";
+    };
+  };
+
+  # Open web ports in the firewall.
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "20.09"; # Did you read the comment?
+
+}
+
