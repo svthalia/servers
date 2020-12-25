@@ -74,6 +74,8 @@
   environment.persistence."/persist".mounts = [
     "/var/lib/hydra"
   ];
+  environment.etc."hydra/authorization/svthalia".source = "/persist/keys/github_token";
+
   services.postgresql.dataDir = "/persist/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
 
   nixpkgs.overlays =
@@ -95,8 +97,8 @@
               )
               # Enable a shields.io compatible badge
               (packagesNew.fetchpatch {
-                  url = "https://github.com/NixOS/hydra/commit/c75523fc088e7903010ea500da55af31c170512d.patch";
-                  sha256 = "09sk79rab7a4lb9vxz0pqcik5ivypl9bmjac3b7lzzbsxvjl8bpi";
+                  url = "https://github.com/NixOS/hydra/commit/f64230b45edf07d16446e5ba17977c213937a5f0.patch";
+                  sha256 = "0n304zy6g0fq6znxyb81hvjnx7mdhw7s5rdhb3pd5sd6d309cqxd";
                 }
               )
             ];

@@ -34,18 +34,26 @@ let
 
         emailresponsible = false;
       };
+
+      nixpkgs = {
+        type = "git";
+
+        value = "https://github.com/NixOS/nixpkgs.git nixos-20.09";
+
+        emailresponsible = false;
+      };
     };
   };
 
-  master = toJobset "master" {
+  main = toJobset "main" {
     base.repo = { owner.login = "svthalia"; name = repo; };
 
-    head.sha = "master";
+    head.sha = if repo == "servers" then "main" else "master";
 
-    title = "master";
+    title = if repo == "servers" then "main" else "master";
   };
 
-  jobsets = pkgs.lib.mapAttrs toJobset pullRequests // { inherit master; };
+  jobsets = pkgs.lib.mapAttrs toJobset pullRequests // { inherit main; };
 
 in
   { jobsets = pkgs.writeText "jobsets.json" (builtins.toJSON jobsets);

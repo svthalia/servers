@@ -1,4 +1,7 @@
 # servers
+
+![fred build status](https://img.shields.io/endpoint?label=fred&url=https%3A%2F%2Fhydra.technicie.nl%2Fjob%2Fservers%2Fmain%2Fservers-release%2Fshield)
+
 The nix configuration for our servers
 
 We have two hardware servers, fred and ivo, which are set up with [Erase Your Darlings].
