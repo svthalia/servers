@@ -45,7 +45,7 @@ let
     };
   };
 
-  main = toJobset "main" {
+  main = toJobset (if repo == "servers" then "main" else "master") {
     base.repo = { owner.login = "svthalia"; name = repo; };
 
     head.sha = if repo == "servers" then "main" else "master";
