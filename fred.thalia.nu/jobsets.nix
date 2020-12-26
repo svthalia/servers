@@ -45,7 +45,7 @@ let
     };
   };
 
-  pullToJobset = pull: toJobset "pull/${num}/head";
+  pullToJobset = pull: toJobset "pull/${pull}/head";
 
   mainBranch = if repo == "servers" then "main" else "master";
 
