@@ -112,6 +112,18 @@ in
                   sha256 = "0n304zy6g0fq6znxyb81hvjnx7mdhw7s5rdhb3pd5sd6d309cqxd";
                 }
               )
+              # Enable GitHub logins
+              (packagesNew.fetchpatch {
+                  url = "https://github.com/NixOS/hydra/commit/5220eb308de8451d8a8de6f456b643ea267d19b0.patch";
+                  sha256 = "0000000000000000000000000000000000000000000000000000";
+                }
+              )
+              # Try out GitHub PR status update
+              (packagesNew.fetchpatch {
+                  url = "https://github.com/NixOS/hydra/commit/f4a1d2b3909b7f987fa4d6164afd745655d95b41.patch";
+                  sha256 = "0000000000000000000000000000000000000000000000000000";
+                }
+              )
             ];
           }
         );
