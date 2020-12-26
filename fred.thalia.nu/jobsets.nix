@@ -30,7 +30,7 @@ let
       src = {
         type = "git";
 
-        value = "https://github.com/${info.base.repo.owner.login}/${info.base.repo.name}.git ${info.head.sha}";
+        value = "https://github.com/${info.base.repo.owner.login}/${info.base.repo.name}.git pull/${num}/head";
 
         emailresponsible = false;
       };
