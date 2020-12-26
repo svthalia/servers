@@ -66,6 +66,12 @@ in
     ];
   };
 
+  nix.extraOptions = ''
+      experimental-features = nix-command
+   '';
+   # this is required until nix 2.4 is released
+   nix.package = pkgs.nixUnstable;
+
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
