@@ -68,9 +68,9 @@ in
 
   nix.extraOptions = ''
       experimental-features = nix-command flakes
-   '';
-   # this is required until nix 2.4 is released
-   nix.package = pkgs.nixUnstable;
+  '';
+  # this is required until nix 2.4 is released
+  nix.package = pkgs.nixUnstable;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
@@ -143,7 +143,7 @@ in
   environment.etc."hydra/jobsets.nix".text = builtins.readFile ./jobsets.nix;
 
   environment.etc."hydra/machines".text = ''
-    localhost x86_64-linux,builtin - 8 1 local,big-parallel,kvm,nixos-test
+    localhost x86_64-linux,builtin - 4 1 local,big-parallel,kvm,nixos-test
   '';
 
   services.hydra = {
