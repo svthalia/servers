@@ -6,7 +6,7 @@ repo: {
   nixexprinput = "local";
   nixexprpath = "jobsets.nix";
 
-  checkinterval = "20";
+  checkinterval = "120";
   schedulingshares = 1;
   enableemail = false;
   emailoverride = "";
