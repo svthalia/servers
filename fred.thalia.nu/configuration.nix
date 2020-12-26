@@ -184,7 +184,7 @@ in
     };
   };
 
-  nix-serve = {
+  services.nix-serve = {
     enable = true;
 
     bindAddress = "127.0.0.1";
@@ -192,7 +192,7 @@ in
     secretKeyFile = nixServe.privateKey;
   };
 
-  nix-serve-keys = {
+  systemd.services.nix-serve-keys = {
     script = ''
       if [ ! -e ${nixServe.keyDirectory} ]; then
         mkdir -p ${nixServe.keyDirectory}
