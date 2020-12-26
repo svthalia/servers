@@ -4,6 +4,17 @@
 
 { config, pkgs, ... }:
 
+let
+  nixServe = rec {
+    keyDirectory = "/persist/keys/nix-serve";
+
+    privateKey = "${keyDirectory}/nix-serve.sec";
+
+    publicKey = "${keyDirectory}/nix-serve.pub";
+  };
+
+in
+
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -129,6 +140,7 @@
          authorization = svthalia
          useShortContext = 1
        </githubstatus>
+       binary_cache_secret_key_file = ${nixServe.privateKey}
      '';
 
     hydraURL = "https://hydra.technicie.nl";
@@ -156,11 +168,45 @@
     recommendedOptimisation = true;
     recommendedTlsSettings = true;
     recommendedProxySettings = true;
-    virtualHosts."hydra.technicie.nl" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/".proxyPass = "http://127.0.0.1:3000";
+    virtualHosts = {
+      "hydra.technicie.nl" = {
+        enableACME = true;
+        forceSSL = true;
+
+        locations."/".proxyPass = "http://127.0.0.1:3000";
+      };
+      "cache.technicie.nl" = {
+        enableACME = true;
+        forceSSL = true;
+
+        locations."/".proxyPass = "http://127.0.0.1:5000";
+      };
     };
+  };
+
+  nix-serve = {
+    enable = true;
+
+    bindAddress = "127.0.0.1";
+
+    secretKeyFile = nixServe.privateKey;
+  };
+
+  nix-serve-keys = {
+    script = ''
+      if [ ! -e ${nixServe.keyDirectory} ]; then
+        mkdir -p ${nixServe.keyDirectory}
+      fi
+      if ! [ -e ${nixServe.privateKey} ] || ! [ -e ${nixServe.publicKey} ]; then
+        ${pkgs.nix}/bin/nix-store --generate-binary-cache-key cache.dhall-lang.org ${nixServe.privateKey} ${nixServe.publicKey}
+      fi
+      chown -R nix-serve:hydra ${nixServe.keyDirectory}
+      chmod 640 ${nixServe.privateKey}
+    '';
+
+    serviceConfig.Type = "oneshot";
+
+    wantedBy = [ "multi-user.target" ];
   };
 
   # Open web ports in the firewall.
