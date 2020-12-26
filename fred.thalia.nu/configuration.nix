@@ -129,7 +129,6 @@
          authorization = svthalia
          useShortContext = 1
        </githubstatus>
-       evaluator_workers = 1
      '';
 
     hydraURL = "https://hydra.technicie.nl";
