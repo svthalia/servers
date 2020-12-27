@@ -96,11 +96,11 @@ in
         hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (old: {
             patches = (old.patches or []) ++ [
               # Use GitHub tokens for their API authentication
-              (packagesNew.fetchurl {
-                  url = "https://raw.githubusercontent.com/dhall-lang/dhall-lang/baaac8ce151c5fc876377f784e9c32ace963a56f/nixops/hydra.patch";
-                  hash = "sha256:1g3bsrs0xx7231phjgyna4n4x465ipx7sjd7k9wf8yrwdi7f0k3z";
-                }
-              )
+              # (packagesNew.fetchurl {
+              #     url = "https://raw.githubusercontent.com/dhall-lang/dhall-lang/baaac8ce151c5fc876377f784e9c32ace963a56f/nixops/hydra.patch";
+              #     hash = "sha256:1g3bsrs0xx7231phjgyna4n4x465ipx7sjd7k9wf8yrwdi7f0k3z";
+              #   }
+              # )
               # Allow local files to be used for jobset configuration
               (packagesNew.fetchurl {
                   url = "https://raw.githubusercontent.com/dhall-lang/dhall-lang/baaac8ce151c5fc876377f784e9c32ace963a56f/nixops/no-restrict-eval.patch";
@@ -142,7 +142,7 @@ in
     localhost x86_64-linux,builtin - 4 1 local,big-parallel,kvm,nixos-test
   '';
 
-  services.hydra = {
+  services.hydra-dev = {
     buildMachinesFiles = [ "/etc/hydra/machines" ];
 
     enable = true;
@@ -163,8 +163,6 @@ in
     listenHost = "127.0.0.1";
 
     notificationSender = "noreply@technicie.nl";
-
-    package = pkgs.hydra-unstable;
   };
 
   nix.gc.automatic = true;
