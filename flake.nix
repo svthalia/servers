@@ -4,7 +4,7 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
   inputs.hydra.url = "github:pingiun/hydra/github-notify";
 
-  outputs = { self, nixpkgs }: {
+  outputs = { self, nixpkgs, hydra }: {
 
     hydraJobs = {
       fred = self.nixosConfigurations.fred.config.system.build.toplevel;
