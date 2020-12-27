@@ -12,6 +12,8 @@ let
 
     description = info.title;
 
+    type = "flake";
+
     flake = "git+https://github.com/svthalia/servers?ref=${ref}";
 
     checkinterval = 120;
