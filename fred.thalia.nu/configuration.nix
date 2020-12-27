@@ -46,11 +46,6 @@ in
   # Needed for zfs
   networking.hostId = "718ec992";
 
-  # Required for fred's network card, unfortunately
-  # The import of not-detected.nix in the hardware-configuration should also do this
-  # but we enable it here explicitly for piece of mind
-  hardware.enableRedistributableFirmware = true;
-
   networking.defaultGateway = "131.174.41.1";
   networking.nameservers = [
     "131.174.30.40"
@@ -162,7 +157,7 @@ in
      '';
 
     hydraURL = "https://hydra.technicie.nl";
-    useSubstitutes = false;
+    useSubstitutes = true;
 
     listenHost = "127.0.0.1";
 
