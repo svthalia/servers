@@ -12,7 +12,7 @@ let
 
     description = info.title;
 
-    type = "flake";
+    type = 1;
 
     flake = "git+https://github.com/svthalia/servers?ref=${ref}";
 
