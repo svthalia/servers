@@ -3,8 +3,9 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
   inputs.hydra.url = "github:pingiun/hydra/github-notify";
+  inputs.nix-serve.url = "github:edolstra/nix-serve";
 
-  outputs = { self, nixpkgs, hydra }: {
+  outputs = { self, nixpkgs, hydra, nix-serve }: {
 
     hydraJobs = {
       fred = self.nixosConfigurations.fred.config.system.build.toplevel;
@@ -16,6 +17,7 @@
         hydra.nixosModules.hydra
         ./fred.thalia.nu/configuration.nix
         ({ pkgs, ...}: {
+          nixpkgs.overlays = [ nix-serve.overlay ];
           nix.registry.nixpkgs.flake = nixpkgs;
         })
       ];
