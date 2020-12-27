@@ -171,11 +171,9 @@ in
     package = pkgs.hydra-unstable;
   };
 
-  # systemd.services.nix-gc =
-  #     { description = "Nix Garbage Collector";
-  #       script = "exec ${config.nix.package.out}/bin/nix-collect-garbage ${cfg.options}";
-  #       startAt = optional cfg.automatic cfg.dates;
-  #     };
+  nix.gc.automatic = true;
+  nix.gc.dates = "*:45";
+  nix.gc.options = ''--max-freed "$((128 * 1024**3 - 1024 * $(df -P -k /nix/store | tail -n 1 | ${pkgs.gawk}/bin/awk '{ print $4 }')))"'';
 
   security.acme.email = "www@thalia.nu";
   security.acme.acceptTerms = true;
