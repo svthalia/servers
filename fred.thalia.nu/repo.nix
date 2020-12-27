@@ -4,7 +4,7 @@ repo: {
   description = "${repo} pull requests";
 
   nixexprinput = "local";
-  nixexprpath = "jobsets.nix";
+  nixexprpath = "${repo}_jobsets.nix";
 
   checkinterval = "20";
   schedulingshares = 1;

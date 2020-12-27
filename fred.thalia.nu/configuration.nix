@@ -135,7 +135,8 @@ in
 
   environment.etc."hydra/concrexit.json".text = builtins.toJSON (import ./repo.nix "concrexit");
   environment.etc."hydra/servers.json".text = builtins.toJSON (import ./repo.nix "servers");
-  environment.etc."hydra/jobsets.nix".text = builtins.readFile ./jobsets.nix;
+  environment.etc."hydra/concrexit_jobsets.nix".text = builtins.readFile ./concrexit_jobsets.nix;
+  environment.etc."hydra/servers_jobsets.nix".text = builtins.readFile ./servers_jobsets.nix;
 
   environment.etc."hydra/machines".text = ''
     localhost x86_64-linux,builtin - 4 1 local,big-parallel,kvm,nixos-test
