@@ -12,7 +12,7 @@ let
 
     description = info.title;
 
-    flake = "github:svthalia/servers/${ref}";
+    flake = "git+https://github.com/svthalia/servers?ref=${ref}";
 
     checkinterval = 120;
 
@@ -28,8 +28,6 @@ let
   pullToJobset = pull: toJobset "pull/${pull}/head";
 
   main = toJobset "refs/heads/main" {
-    base.repo = { owner.login = "svthalia"; name = "main"; };
-
     title = "main";
   };
 
