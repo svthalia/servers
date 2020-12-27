@@ -2,7 +2,7 @@
   config = {
     nix = {
       # This is required to be able to use nix-copy-closure
-      trustedUsers = [ "root" "jelle" "wouter" ];
+      trustedUsers = [ "root" "@wheel" ];
     };
 
     # Because user directories aren't saved, sudo doesn't remember that we have seen the lecture

@@ -19,5 +19,11 @@
       ];
     };
 
+    nixosModules = {
+      fredcache = ./modules/fredcache.nix;
+      users = ./modules/users.nix;
+      common = ./modules/common.nix;
+    };
+
   };
 }
