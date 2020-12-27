@@ -209,7 +209,7 @@ in
         mkdir -p ${nixServe.keyDirectory}
       fi
       if ! [ -e ${nixServe.privateKey} ] || ! [ -e ${nixServe.publicKey} ]; then
-        ${pkgs.nix}/bin/nix-store --generate-binary-cache-key cache.dhall-lang.org ${nixServe.privateKey} ${nixServe.publicKey}
+        ${pkgs.nix}/bin/nix-store --generate-binary-cache-key cache.technicie.nl ${nixServe.privateKey} ${nixServe.publicKey}
       fi
       chown -R nix-serve:hydra ${nixServe.keyDirectory}
       chmod 640 ${nixServe.privateKey}
