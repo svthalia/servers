@@ -5,6 +5,10 @@
 
   outputs = { self, nixpkgs }: {
 
+    hydraJobs = {
+      fred = self.nixosConfigurations.fred.config.system.build.toplevel;
+    };
+
     nixosConfigurations.fred = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
