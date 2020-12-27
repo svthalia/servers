@@ -58,6 +58,24 @@
         "type": "indirect"
       }
     },
+    "nix-serve": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1606234897,
+        "narHash": "sha256-yV/ovc9/SQxgGDS+yEuaDpadgEiki0YJ5o2RV0dq+Es=",
+        "owner": "edolstra",
+        "repo": "nix-serve",
+        "rev": "2641d7f6372572f82f8701f38c8cd5aaed0188b4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "nix-serve",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1602702596,
@@ -74,6 +92,21 @@
       }
     },
     "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1606086654,
+        "narHash": "sha256-VFl+3eGIMqNp7cyOMJ6TjM/+UcsLKtodKoYexrlTJMI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "19db3e5ea2777daa874563b5986288151f502e27",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-20.09",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1609026361,
         "narHash": "sha256-/cvQozy7j2FTuXmpVgVv7H85kL89zWUVrmqhc42ehbo=",
@@ -92,7 +125,8 @@
     "root": {
       "inputs": {
         "hydra": "hydra",
-        "nixpkgs": "nixpkgs_2"
+        "nix-serve": "nix-serve",
+        "nixpkgs": "nixpkgs_3"
       }
     }
   },
