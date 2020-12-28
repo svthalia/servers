@@ -95,7 +95,7 @@ in
       modifyHydra = packagesNew: packagesOld: {
         hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (old: {
             patches = (old.patches or []) ++ [
-              # Remove warning about binary_cache_secret_key_file
+              # Remove warning about binary_cache_secret_key_file (copied from dhall-lang repo)
               (packagesNew.fetchpatch {
                   url = "https://github.com/NixOS/hydra/commit/df3262e96cb55bdfaac7726896728bfef675698b.patch";
 
