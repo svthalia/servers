@@ -8,7 +8,7 @@
   outputs = { self, nixpkgs, hydra, nix-serve }: {
 
     hydraJobs = rec {
-      servers-release = nixpkgs.releaseTools.aggregate {
+      servers-release = nixpkgs.legacyPackages."x86_64-linux".releaseTools.aggregate {
         name = "servers";
 
         constituents = [
