@@ -5,7 +5,7 @@ let
 
   pullRequests = builtins.fromJSON (builtins.readFile pullRequestsJSON);
 
-  toJobset = info: {
+  toJobset = num: info: {
     enabled = 1;
 
     hidden = false;
@@ -28,7 +28,7 @@ let
   };
 
 
-  main = toJobset {
+  main = toJobset "main" {
     head.sha = "main";
 
     title = "main";
