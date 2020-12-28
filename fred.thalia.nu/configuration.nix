@@ -90,25 +90,6 @@ in
 
   services.postgresql.dataDir = "/persist/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
 
-  nixpkgs.overlays =
-    let
-      modifyHydra = packagesNew: packagesOld: {
-        hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (old: {
-            patches = (old.patches or []) ++ [
-              # Allow local files to be used for jobset configuration
-              (packagesNew.fetchurl {
-                  url = "https://raw.githubusercontent.com/dhall-lang/dhall-lang/baaac8ce151c5fc876377f784e9c32ace963a56f/nixops/no-restrict-eval.patch";
-                  hash = "sha256:09pw64ppjj34n5vd3b81yydbhybb6y4f15angsbrzmpmifvmsiws";
-                }
-              )
-            ];
-          }
-        );
-      };
-
-    in
-      [ modifyHydra ];
-
   environment.etc."hydra/concrexit.json".text = builtins.toJSON (import ./repo.nix "concrexit");
   environment.etc."hydra/servers.json".text = builtins.toJSON (import ./repo.nix "servers");
   environment.etc."hydra/concrexit_jobsets.nix".text = builtins.readFile ./concrexit_jobsets.nix;
