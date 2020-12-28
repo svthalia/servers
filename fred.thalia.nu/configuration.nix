@@ -106,10 +106,15 @@ in
 
     extraConfig = ''
       <githubstatus>
-        jobs = .*:.*:.*-release
+        jobs = concrexit:.*:.*-release
         inputs = src
         authorization = svthalia
-        useShortContext = 1
+        context = ci/hydra:concrexit
+      </githubstatus>
+      <githubstatus>
+        jobs = servers:.*:.*-release
+        authorization = svthalia
+        context = ci/hydra:servers
       </githubstatus>
 
       enable_github_login = 1
