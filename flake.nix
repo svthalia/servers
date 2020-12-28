@@ -7,7 +7,15 @@
 
   outputs = { self, nixpkgs, hydra, nix-serve }: {
 
-    hydraJobs = {
+    hydraJobs = rec {
+      servers-release = pkgs.releaseTools.aggregate {
+        name = "servers";
+
+        constituents = [
+          fred
+        ];
+      };
+
       fred = self.nixosConfigurations.fred.config.system.build.toplevel;
     };
 

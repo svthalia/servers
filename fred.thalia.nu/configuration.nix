@@ -123,15 +123,19 @@ in
 
     enable = true;
 
-     extraConfig = ''
-       <githubstatus>
-         jobs = .*:.*:.*-release
-         inputs = src
-         authorization = svthalia
-         useShortContext = 1
-       </githubstatus>
-       binary_cache_secret_key_file = ${nixServe.privateKey}
-     '';
+    extraConfig = ''
+      <githubstatus>
+        jobs = .*:.*:.*-release
+        inputs = src
+        authorization = svthalia
+        useShortContext = 1
+      </githubstatus>
+
+      enable_github_login = 1
+      github_client_id = 50818437ab0434353b1e
+      github_client_secret_file = "/persist/keys/github_client_secret"
+      binary_cache_secret_key_file = ${nixServe.privateKey}
+    '';
 
     hydraURL = "https://hydra.technicie.nl";
     useSubstitutes = true;
