@@ -5,7 +5,7 @@ let
 
   pullRequests = builtins.fromJSON (builtins.readFile pullRequestsJSON);
 
-  toJobset = ref: info: {
+  toJobset = info: {
     enabled = 1;
 
     hidden = false;
@@ -14,7 +14,7 @@ let
 
     type = 1;
 
-    flake = "git+https://github.com/svthalia/servers?ref=${ref}";
+    flake = "github:svthalia/servers/${info.head.sha}";
 
     checkinterval = 120;
 
@@ -27,13 +27,14 @@ let
     keepnr = 1;
   };
 
-  pullToJobset = pull: toJobset "pull/${pull}/head";
 
-  main = toJobset "refs/heads/main" {
+  main = toJobset {
+    head.sha = "main";
+
     title = "main";
   };
 
-  jobsets = pkgs.lib.mapAttrs pullToJobset pullRequests // { inherit main; };
+  jobsets = pkgs.lib.mapAttrs toJobset pullRequests // { inherit main; };
 
 in
   { jobsets = pkgs.writeText "jobsets.json" (builtins.toJSON jobsets);
