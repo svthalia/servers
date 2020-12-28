@@ -10,11 +10,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1609021584,
-        "narHash": "sha256-kOPQflPlyLHUqi1fiQlgNuT307T0hWXPKj8jAZRGmQ8=",
+        "lastModified": 1609158785,
+        "narHash": "sha256-JVhjza5Z4idTbH6lMo5gjKbSRj1IXd14jvNBdskcKlI=",
         "owner": "pingiun",
         "repo": "hydra",
-        "rev": "37baa3544035ce8050e6b28c0d5031812d2a5a76",
+        "rev": "67468a9e7a741581c804d9f4ce5a50e26d019e91",
         "type": "github"
       },
       "original": {
