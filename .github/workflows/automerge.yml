@@ -1,6 +1,6 @@
 name: automerge
 on:
-  status
+  status:
   schedule:
     # every day at 8pm UTC
     - cron: '0 20 * * *'
