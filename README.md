@@ -5,3 +5,5 @@
 We have two hardware servers, fred and ivo, which are set up with the [Erase Your Darlings] setup.
 
 [Erase Your Darlings]: https://grahamc.com/blog/erase-your-darlings
+
+Please close this PR, it's just for testing hydra
