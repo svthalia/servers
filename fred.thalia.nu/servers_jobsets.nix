@@ -5,7 +5,7 @@ let
 
   pullRequests = builtins.fromJSON (builtins.readFile pullRequestsJSON);
 
-  toJobset = num: info: {
+  toJobset = ref: info: {
     enabled = 1;
 
     hidden = false;
