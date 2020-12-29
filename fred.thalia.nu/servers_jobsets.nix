@@ -14,7 +14,7 @@ let
 
     type = 1;
 
-    flake = "github:svthalia/servers/${info.head.sha}";
+    flake = "git+https://github.com/svthalia/servers?ref=${ref}";
 
     checkinterval = 120;
 
@@ -27,14 +27,15 @@ let
     keepnr = 1;
   };
 
+  pullToJobset = pull: toJobset "refs/pull/${pull}/head";
 
-  main = toJobset "main" {
+  main = toJobset "refs/heads/main" {
     head.sha = "main";
 
     title = "main";
   };
 
-  jobsets = pkgs.lib.mapAttrs toJobset pullRequests // { inherit main; };
+  jobsets = pkgs.lib.mapAttrs pullToJobset pullRequests // { inherit main; };
 
 in
   { jobsets = pkgs.writeText "jobsets.json" (builtins.toJSON jobsets);

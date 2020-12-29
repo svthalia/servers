@@ -5,7 +5,7 @@ let
 
   pullRequests = builtins.fromJSON (builtins.readFile pullRequestsJSON);
 
-  toJobset = num: info: {
+  toJobset = ref: info: {
     enabled = 1;
 
     hidden = false;
@@ -30,7 +30,7 @@ let
       src = {
         type = "git";
 
-        value = "https://github.com/${info.base.repo.owner.login}/${info.base.repo.name}.git ${info.head.sha}";
+        value = "https://github.com/${info.base.repo.owner.login}/${info.base.repo.name}.git ${ref}";
 
         emailresponsible = false;
       };
@@ -45,16 +45,17 @@ let
     };
   };
 
+  pullToJobset = pull: toJobset "refs/pull/${pull}/head";
+
   mainBranch = if repo == "servers" then "main" else "master";
 
-  main = toJobset "main" {
+  main = toJobset mainBranch {
     base.repo = { owner.login = "svthalia"; name = repo; };
 
     title = mainBranch;
-    head.sha = mainBranch;
   };
 
-  jobsets = pkgs.lib.mapAttrs toJobset pullRequests // { inherit main; };
+  jobsets = pkgs.lib.mapAttrs pullToJobset pullRequests // { inherit main; };
 
 in
   { jobsets = pkgs.writeText "jobsets.json" (builtins.toJSON jobsets);
