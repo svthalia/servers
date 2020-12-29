@@ -5,14 +5,29 @@
   inputs.hydra.url = "github:pingiun/hydra";
   inputs.nix-serve.url = "github:edolstra/nix-serve";
 
-  outputs = { self, nixpkgs, hydra, nix-serve }: {
+  outputs = { self, nixpkgs, hydra, nix-serve }:
+    let
+      pkgs = import nixpkgs {
+        # It only makes sense to build on linux
+        system = "x86_64-linux";
+      };
+
+      # Derivation that trivially depends on the input source code revision.
+      # As this is included in the "dhall-lang" aggregate, it forces every
+      # commit to have a corresponding GitHub status check, even if the
+      # commit doesn't make any changes (which can happen when merging
+      # master in).
+      rev = pkgs.runCommand "rev" {} ''echo "${self.rev}" > $out'';
+    in
+    {
 
     hydraJobs = rec {
-      servers-release = nixpkgs.legacyPackages."x86_64-linux".releaseTools.aggregate {
+      servers-release = pkgs.releaseTools.aggregate {
         name = "servers";
 
         constituents = [
           fred
+          rev
         ];
       };
 
