@@ -1,0 +1,29 @@
+name: Update flake inputs
+
+on:
+  schedule:
+    # every day at 8am UTC
+    - cron: '0 8 * * *'
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.3.4
+      with:
+        # Nix Flakes doesn't work on shallow clones
+        fetch-depth: 0
+    - uses: cachix/install-nix-action@v12
+      with:
+        install_url: https://github.com/numtide/nix-flakes-installer/releases/download/nix-2.4pre20201221_9fab14a/install
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - run: nix flake update --recreate-lock-file --commit-lock-file
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: "${{ secrets.THALIAWWW_SERVICE_TOKEN }}"
+        title: "[automation] update flake dependencies"
+        branch: "automation/update-flake-dependencies"
+        labels: "automerge"

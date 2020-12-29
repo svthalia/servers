@@ -1,0 +1,39 @@
+name: automerge
+on:
+  status
+  schedule:
+    # every day at 8pm UTC
+    - cron: '0 20 * * *'
+
+  workflow_run:
+    workflows:
+      - "Update flake inputs"
+    types:
+      - completed
+
+  # Try merging a pull request when it is approved.
+  pull_request_review:
+    types:
+      - submitted
+
+  # Try merging a pull request when a draft is marked as “ready for review”, when
+  # a required label is applied or when a “do not merge” label is removed.
+  pull_request_target:
+    types:
+      - opened
+      - labeled
+      - unlabeled
+      - ready_for_review
+
+jobs:
+  automerge:
+    if: github.event.review.state == 'approved' || !github.event.review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: reitermarkus/automerge@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: rebase
+          do-not-merge-labels: never-merge
+          required-labels: automerge
+          pull-request: ${{ github.event.inputs.pull-request }}
