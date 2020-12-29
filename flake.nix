@@ -8,6 +8,7 @@
   outputs = { self, nixpkgs, hydra, nix-serve }:
     let
       pkgs = import nixpkgs {
+        # It only makes sense to build on linux
         system = "x86_64-linux";
       };
 
