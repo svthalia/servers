@@ -16,7 +16,7 @@ let
 
     flake = "git+https://github.com/svthalia/servers?ref=${ref}";
 
-    checkinterval = 120;
+    checkinterval = 0;
 
     schedulingshares = 1;
 
