@@ -68,6 +68,10 @@ in
   # this is required until nix 2.4 is released
   nix.package = pkgs.nixUnstable;
 
+  environment.systemPackages = with pkgs; [
+      git
+    ];
+
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
