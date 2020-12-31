@@ -129,20 +129,21 @@ in
 
     extraConfig = ''
       <githubstatus>
+        authorization = svthalia
         jobs = concrexit:.*:.*-release
         inputs = src
         context = ci/hydra:concrexit
       </githubstatus>
       <githubstatus>
+        authorization = svthalia
         jobs = servers:.*:.*-release
         context = ci/hydra:servers
       </githubstatus>
 
       <githubdeploys>
+        authorization = svthalia
         jobs = servers:main:[^-]
       </githubdeploys>
-
-      github_authorization = svthalia
 
       enable_github_login = 1
       github_client_id = 50818437ab0434353b1e
