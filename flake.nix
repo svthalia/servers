@@ -19,38 +19,40 @@
       # master in).
       rev = pkgs.runCommand "rev" {} ''echo "${self.rev}" > $out'';
     in
-    {
+      {
 
-    hydraJobs = rec {
-      servers-release = pkgs.releaseTools.aggregate {
-        name = "servers";
+        hydraJobs = rec {
+          servers-release = pkgs.releaseTools.aggregate {
+            name = "servers";
 
-        constituents = [
-          fred
-          rev
-        ];
+            constituents = [
+              fred
+              rev
+            ];
+          };
+
+          fred = self.nixosConfigurations.fred.config.system.build.toplevel;
+        };
+
+        nixosConfigurations.fred = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            hydra.nixosModules.hydra
+            ./fred.thalia.nu/configuration.nix
+            (
+              { pkgs, ... }: {
+                nixpkgs.overlays = [ nix-serve.overlay ];
+                nix.registry.nixpkgs.flake = nixpkgs;
+              }
+            )
+          ];
+        };
+
+        nixosModules = {
+          fredcache = ./modules/fredcache.nix;
+          users = ./modules/users.nix;
+          common = ./modules/common.nix;
+        };
+
       };
-
-      fred = self.nixosConfigurations.fred.config.system.build.toplevel;
-    };
-
-    nixosConfigurations.fred = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        hydra.nixosModules.hydra
-        ./fred.thalia.nu/configuration.nix
-        ({ pkgs, ...}: {
-          nixpkgs.overlays = [ nix-serve.overlay ];
-          nix.registry.nixpkgs.flake = nixpkgs;
-        })
-      ];
-    };
-
-    nixosModules = {
-      fredcache = ./modules/fredcache.nix;
-      users = ./modules/users.nix;
-      common = ./modules/common.nix;
-    };
-
-  };
 }

@@ -1,8 +1,9 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 {
   config = {
     environment.systemPackages = with pkgs; [
-      vim htop
+      vim
+      htop
     ];
   };
 }

@@ -17,7 +17,8 @@ in
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../modules/persistence.nix
       ../modules/users.nix
@@ -62,7 +63,7 @@ in
   };
 
   nix.extraOptions = ''
-      experimental-features = nix-command flakes
+    experimental-features = nix-command flakes
   '';
   # this is required until nix 2.4 is released
   nix.package = pkgs.nixUnstable;
@@ -93,10 +94,12 @@ in
   nixpkgs.overlays =
     let
       modifyHydra = packagesNew: packagesOld: {
-        hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (old: {
+        hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (
+          old: {
             patches = (old.patches or []) ++ [
               # Remove warning about binary_cache_secret_key_file (copied from dhall-lang repo)
-              (packagesNew.fetchpatch {
+              (
+                packagesNew.fetchpatch {
                   url = "https://github.com/NixOS/hydra/commit/df3262e96cb55bdfaac7726896728bfef675698b.patch";
 
                   sha256 = "1344cqlmx0ncgsh3dqn5igbxx6rgmlm14rgb5vi6rxkvwnfqy3zj";
@@ -221,4 +224,3 @@ in
   system.stateVersion = "20.09"; # Did you read the comment?
 
 }
-

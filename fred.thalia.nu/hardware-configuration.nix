@@ -5,36 +5,41 @@
 
 {
   boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ata_piix" "megaraid_sas" "usbhid" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [];
 
   # Required for fred's network card, unfortunately
   hardware.enableRedistributableFirmware = true;
 
   fileSystems."/" =
-    { device = "rpool/local/root";
+    {
+      device = "rpool/local/root";
       fsType = "zfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/73B1-317A";
+    {
+      device = "/dev/disk/by-uuid/73B1-317A";
       fsType = "vfat";
     };
 
   fileSystems."/persist" =
-    { device = "rpool/safe/persist";
+    {
+      device = "rpool/safe/persist";
       fsType = "zfs";
       neededForBoot = true;
     };
 
   fileSystems."/nix" =
-    { device = "rpool/local/nix";
+    {
+      device = "rpool/local/nix";
       fsType = "zfs";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/03ea21a7-c24a-43b5-b90a-e5972dfc7631"; }
+    [
+      { device = "/dev/disk/by-uuid/03ea21a7-c24a-43b5-b90a-e5972dfc7631"; }
     ];
 
   nix.maxJobs = lib.mkDefault 16;

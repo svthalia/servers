@@ -44,16 +44,16 @@ in
     '';
 
     systemd.tmpfiles.rules =
-    let
-      tmpfilesLine = persistentStoragePath: dir:
-        let
-          targetDir = concatPaths [ persistentStoragePath dir ];
-        in
-          "L ${dir} - - - - ${targetDir}";
-      mkTmpfilesLines = persistentStoragePath:
-        map (tmpfilesLine persistentStoragePath) cfg.${persistentStoragePath}.links;
-    in
-      concatMap mkTmpfilesLines persistentStoragePaths;
+      let
+        tmpfilesLine = persistentStoragePath: dir:
+          let
+            targetDir = concatPaths [ persistentStoragePath dir ];
+          in
+            "L ${dir} - - - - ${targetDir}";
+        mkTmpfilesLines = persistentStoragePath:
+          map (tmpfilesLine persistentStoragePath) cfg.${persistentStoragePath}.links;
+      in
+        concatMap mkTmpfilesLines persistentStoragePaths;
 
     system.activationScripts =
       let

@@ -58,5 +58,6 @@ let
   jobsets = pkgs.lib.mapAttrs pullToJobset pullRequests // { inherit main; };
 
 in
-  { jobsets = pkgs.writeText "jobsets.json" (builtins.toJSON jobsets);
-  }
+{
+  jobsets = pkgs.writeText "jobsets.json" (builtins.toJSON jobsets);
+}
