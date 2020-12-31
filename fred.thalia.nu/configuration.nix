@@ -138,6 +138,7 @@ in
         inputs = src
         context = ci/hydra:concrexit
       </githubstatus>
+
       <githubstatus>
         authorization = svthalia
         jobs = servers:.*:.*-release
