@@ -146,7 +146,7 @@ in
 
       <githubdeploys>
         authorization = svthalia
-        jobs = servers:main:[^-]
+        jobs = servers:main:[^-]+
       </githubdeploys>
 
       enable_github_login = 1
