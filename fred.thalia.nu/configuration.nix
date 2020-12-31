@@ -128,14 +128,18 @@ in
       <githubstatus>
         jobs = concrexit:.*:.*-release
         inputs = src
-        authorization = svthalia
         context = ci/hydra:concrexit
       </githubstatus>
       <githubstatus>
         jobs = servers:.*:.*-release
-        authorization = svthalia
         context = ci/hydra:servers
       </githubstatus>
+
+      <githubdeploys>
+        jobs = servers:main:[^-]
+      </githubdeploys>
+
+      github_authorization = svthalia
 
       enable_github_login = 1
       github_client_id = 50818437ab0434353b1e
