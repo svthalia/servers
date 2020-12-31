@@ -152,6 +152,7 @@ in
       enable_github_login = 1
       github_client_id = 50818437ab0434353b1e
       github_client_secret_file = "/persist/keys/github_client_secret"
+
       binary_cache_secret_key_file = ${nixServe.privateKey}
     '';
 
