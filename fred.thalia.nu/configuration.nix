@@ -54,6 +54,7 @@ in
   ];
   networking.interfaces.eno2 = {
     useDHCP = false;
+    tempAddress = "disabled";
     ipv4.addresses = [
       {
         address = "131.174.41.17";
