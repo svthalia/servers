@@ -86,11 +86,9 @@ in
   };
 
   # Persist directories for the services fred runs
-  environment.persistence."/persist".links = [
-    "/var/lib/acme"
-  ];
   environment.persistence."/persist".mounts = [
     "/var/lib/hydra"
+    "/var/lib/acme"
   ];
   environment.etc."hydra/authorization/svthalia".source = "/persist/keys/github_token";
 
