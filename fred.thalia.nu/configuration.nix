@@ -96,6 +96,7 @@ in
       server-port = 80;
     };
   };
+  systemd.services.minecraft-server.serviceConfig.UMask = "0002";
 
   users.users.minecraftadmin = {
     isNormalUser = true;
