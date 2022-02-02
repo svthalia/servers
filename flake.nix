@@ -1,7 +1,7 @@
 {
   description = "Thalia hardware servers NixOS configuration";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+  inputs.nixpkgs.url = "nixpkgs/nixos-21.11";
   inputs.hydra.url = "github:pingiun/hydra";
   inputs.nix-serve.url = "github:edolstra/nix-serve";
 
