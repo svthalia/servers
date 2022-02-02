@@ -70,8 +70,8 @@ in
   nix.package = pkgs.nixUnstable;
 
   environment.systemPackages = with pkgs; [
-      git
-    ];
+    git
+  ];
 
   # Enable the OpenSSH daemon.
   services.openssh = {
@@ -94,41 +94,41 @@ in
 
   services.postgresql.dataDir = "/persist/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
 
-  nixpkgs.overlays =
-    let
-      modifyHydra = packagesNew: packagesOld: {
-        hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (
-          old: {
-            patches = (old.patches or []) ++ [
-              # Remove warning about binary_cache_secret_key_file (copied from dhall-lang repo)
-              (
-                packagesNew.fetchpatch {
-                  url = "https://github.com/NixOS/hydra/commit/df3262e96cb55bdfaac7726896728bfef675698b.patch";
+  # nixpkgs.overlays =
+  #   let
+  #     modifyHydra = packagesNew: packagesOld: {
+  #       hydra-unstable = packagesOld.hydra-unstable.overrideAttrs (
+  #         old: {
+  #           patches = (old.patches or []) ++ [
+  #             # Remove warning about binary_cache_secret_key_file (copied from dhall-lang repo)
+  #             (
+  #               packagesNew.fetchpatch {
+  #                 url = "https://github.com/NixOS/hydra/commit/df3262e96cb55bdfaac7726896728bfef675698b.patch";
 
-                  sha256 = "1344cqlmx0ncgsh3dqn5igbxx6rgmlm14rgb5vi6rxkvwnfqy3zj";
-                }
-              )
-            ];
-          }
-        );
-      };
+  #                 sha256 = "1344cqlmx0ncgsh3dqn5igbxx6rgmlm14rgb5vi6rxkvwnfqy3zj";
+  #               }
+  #             )
+  #           ];
+  #         }
+  #       );
+  #     };
 
-    in
-      [ modifyHydra ];
+  #   in
+  #     [ modifyHydra ];
 
-  environment.etc."hydra/concrexit.json".text = builtins.toJSON (import ./repo.nix "concrexit");
-  environment.etc."hydra/servers.json".text = builtins.toJSON (import ./repo.nix "servers");
-  environment.etc."hydra/concrexit_jobsets.nix".text = builtins.readFile ./concrexit_jobsets.nix;
-  environment.etc."hydra/servers_jobsets.nix".text = builtins.readFile ./servers_jobsets.nix;
+  # environment.etc."hydra/concrexit.json".text = builtins.toJSON (import ./repo.nix "concrexit");
+  # environment.etc."hydra/servers.json".text = builtins.toJSON (import ./repo.nix "servers");
+  # environment.etc."hydra/concrexit_jobsets.nix".text = builtins.readFile ./concrexit_jobsets.nix;
+  # environment.etc."hydra/servers_jobsets.nix".text = builtins.readFile ./servers_jobsets.nix;
 
-  environment.etc."hydra/machines".text = ''
-    localhost x86_64-linux,builtin - 4 1 local,big-parallel,kvm,nixos-test
-  '';
+  # environment.etc."hydra/machines".text = ''
+  #   localhost x86_64-linux,builtin - 4 1 local,big-parallel,kvm,nixos-test
+  # '';
 
   services.hydra-dev = {
     buildMachinesFiles = [ "/etc/hydra/machines" ];
 
-    enable = true;
+    # enable = true;
 
     extraConfig = ''
       <githubstatus>
@@ -178,45 +178,45 @@ in
     recommendedTlsSettings = true;
     recommendedProxySettings = true;
     virtualHosts = {
-      "hydra.technicie.nl" = {
-        enableACME = true;
-        forceSSL = true;
+      # "hydra.technicie.nl" = {
+      #   enableACME = true;
+      #   forceSSL = true;
 
-        locations."/".proxyPass = "http://127.0.0.1:3000";
-      };
-      "cache.technicie.nl" = {
-        enableACME = true;
-        forceSSL = true;
+      #   locations."/".proxyPass = "http://127.0.0.1:3000";
+      # };
+      # "cache.technicie.nl" = {
+      #   enableACME = true;
+      #   forceSSL = true;
 
-        locations."/".proxyPass = "http://127.0.0.1:5000";
-      };
+      #   locations."/".proxyPass = "http://127.0.0.1:5000";
+      # };
     };
   };
 
-  services.nix-serve = {
-    enable = true;
+  # services.nix-serve = {
+  #   enable = true;
 
-    bindAddress = "127.0.0.1";
+  #   bindAddress = "127.0.0.1";
 
-    secretKeyFile = nixServe.privateKey;
-  };
+  #   secretKeyFile = nixServe.privateKey;
+  # };
 
-  systemd.services.nix-serve-keys = {
-    script = ''
-      if [ ! -e ${nixServe.keyDirectory} ]; then
-        mkdir -p ${nixServe.keyDirectory}
-      fi
-      if ! [ -e ${nixServe.privateKey} ] || ! [ -e ${nixServe.publicKey} ]; then
-        ${pkgs.nix}/bin/nix-store --generate-binary-cache-key cache.technicie.nl ${nixServe.privateKey} ${nixServe.publicKey}
-      fi
-      chown -R nix-serve:hydra ${nixServe.keyDirectory}
-      chmod 640 ${nixServe.privateKey}
-    '';
+  # systemd.services.nix-serve-keys = {
+  #   script = ''
+  #     if [ ! -e ${nixServe.keyDirectory} ]; then
+  #       mkdir -p ${nixServe.keyDirectory}
+  #     fi
+  #     if ! [ -e ${nixServe.privateKey} ] || ! [ -e ${nixServe.publicKey} ]; then
+  #       ${pkgs.nix}/bin/nix-store --generate-binary-cache-key cache.technicie.nl ${nixServe.privateKey} ${nixServe.publicKey}
+  #     fi
+  #     chown -R nix-serve:hydra ${nixServe.keyDirectory}
+  #     chmod 640 ${nixServe.privateKey}
+  #   '';
 
-    serviceConfig.Type = "oneshot";
+  #   serviceConfig.Type = "oneshot";
 
-    wantedBy = [ "multi-user.target" ];
-  };
+  #   wantedBy = [ "multi-user.target" ];
+  # };
 
   # Open web ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 80 443 ];
