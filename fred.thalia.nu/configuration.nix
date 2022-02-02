@@ -102,7 +102,8 @@ in
     home = "/persist/minecraft";
     description = "Rico en Lars";
     createHome = false;
-    extraGroups = [ "minecraft" "systemd-journal" ];
+    group = "minecraft";
+    extraGroups = [ "systemd-journal" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICunYiTe1MOJsGC5OBn69bewMBS5bCCE1WayvM4DZLwE jelle@Jelles-Macbook-Pro.local"
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6jvMop29nVs1rGcgi7hWg62iDlrgKZxoHPcLHm6VqqeRDHfNeu3LbTzeZKRvn5qV2b8E1Ni5zn2Ai+P2DJY8J1DF2ZhBbtTk331GL8Te1kJyDa/3h9Zx//87JWYYIf++nkunVBjUHnAdFQuv7AnGLr3Hq5VCB02GBp69rs5laUNN5alvu8rVxkpkt3TQM/vDYVPw/E7JmrzLT5257TLB1T4MDRUHaktfE0Ma83rq7FvIsIbVPPpHRESj/A9RoSTOQE0wkXplvoNUeh08mZScU47ozMJzexA8TLVYDd951RmxkAXzcOfpBk/mIxQim0PCgblmxVSKIZfRrcSJPLtFn ricotewechel@live.nl"
