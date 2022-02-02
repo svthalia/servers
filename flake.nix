@@ -4,8 +4,9 @@
   inputs.nixpkgs.url = "nixpkgs/nixos-21.11";
   inputs.hydra.url = "github:pingiun/hydra";
   inputs.nix-serve.url = "github:edolstra/nix-serve";
+  inputs.nix.url = "github:nixos/nix/2.4";
 
-  outputs = { self, nixpkgs, hydra, nix-serve }:
+  outputs = { self, nixpkgs, hydra, nix-serve, ... }@attrs:
     let
       pkgs = import nixpkgs {
         # It only makes sense to build on linux
@@ -36,6 +37,7 @@
 
         nixosConfigurations.fred = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = attrs;
           modules = [
             hydra.nixosModules.hydra
             ./fred.thalia.nu/configuration.nix

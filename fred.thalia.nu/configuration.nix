@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, nix, ... }:
 
 let
   nixServe = rec {
@@ -66,8 +66,7 @@ in
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
-  # this is required until nix 2.4 is released
-  # nix.package = pkgs.nixUnstable;
+  nix.package = nix.defaultPackage.x86_64-linux;
 
   environment.systemPackages = with pkgs; [
     git
