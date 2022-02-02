@@ -86,6 +86,13 @@ in
     ];
   };
 
+  services.minecraft-server = {
+    enable = true;
+    dataDir = "/persist/minecraft";
+    openFirewall = true;
+    eula = true;
+  };
+
   # Persist directories for the services fred runs
   environment.persistence."/persist".mounts = [
     "/var/lib/hydra"
