@@ -90,6 +90,7 @@ in
   environment.persistence."/persist".mounts = [
     "/var/lib/hydra"
     "/var/lib/acme"
+    "/var/lib/libvirt"
   ];
   environment.etc."hydra/authorization/svthalia".source = "/persist/keys/github_token";
 
