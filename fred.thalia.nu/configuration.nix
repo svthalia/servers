@@ -86,6 +86,7 @@ in
     ];
   };
 
+  nixpkgs.config.allowUnfree = true;
   services.minecraft-server = {
     enable = true;
     dataDir = "/persist/minecraft";
