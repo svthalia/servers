@@ -101,6 +101,7 @@ in
     isNormalUser = true;
     home = "/persist/minecraft";
     description = "Rico en Lars";
+    createHome = false;
     extraGroups = [ "minecraft" "systemd-journal" ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICunYiTe1MOJsGC5OBn69bewMBS5bCCE1WayvM4DZLwE jelle@Jelles-Macbook-Pro.local"
