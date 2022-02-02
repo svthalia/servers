@@ -92,6 +92,9 @@ in
     dataDir = "/persist/minecraft";
     openFirewall = true;
     eula = true;
+    serverProperties = {
+      server-port = 80;
+    };
   };
 
   # Persist directories for the services fred runs
@@ -182,7 +185,7 @@ in
   security.acme.acceptTerms = true;
 
   services.nginx = {
-    enable = true;
+    # enable = true;
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
     recommendedTlsSettings = true;
