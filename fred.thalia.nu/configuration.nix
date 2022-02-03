@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, nix, ... }:
+{ config, pkgs, lib, nix, ... }:
 
 let
   nixServe = rec {
@@ -97,6 +97,7 @@ in
     };
   };
   systemd.services.minecraft-server.serviceConfig.UMask = "0002";
+  systemd.services.minecraft-server.serviceConfig.ExecStart = lib.mkForce "${pkgs.jre_headless}/bin/java -Xmx4092M -Xms4092M -jar /persist/minecraft/server.jar nogui";
 
   users.users.minecraftadmin = {
     isNormalUser = true;
