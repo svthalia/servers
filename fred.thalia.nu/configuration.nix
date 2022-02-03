@@ -72,7 +72,7 @@ in
     git
   ];
 
-  virtualisation.libvirtd.enable = true;
+  # virtualisation.libvirtd.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
