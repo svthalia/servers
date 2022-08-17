@@ -102,13 +102,13 @@ in
   systemd.services.minecraft-server.serviceConfig.ExecStart = lib.mkForce (pkgs.writeScript "minecraft-start" ''
     #! ${pkgs.runtimeShell}
     cd /persist/minecraft
-    ${pkgs.jre_headless}/bin/java -Xmx4092M -Xms4092M -jar /persist/minecraft/server.jar nogui
+    ${pkgs.jre_headless}/bin/java -Xmx8192M -Xms8192M -jar /persist/minecraft/server.jar nogui
   '');
 
   users.users.minecraftadmin = {
     isNormalUser = true;
     home = "/persist/minecraft";
-    description = "Rico en Lars";
+    description = "Rico, Lars and Thijs";
     createHome = false;
     group = "minecraft";
     extraGroups = [ "systemd-journal" ];
@@ -116,6 +116,7 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICunYiTe1MOJsGC5OBn69bewMBS5bCCE1WayvM4DZLwE jelle@Jelles-Macbook-Pro.local"
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6jvMop29nVs1rGcgi7hWg62iDlrgKZxoHPcLHm6VqqeRDHfNeu3LbTzeZKRvn5qV2b8E1Ni5zn2Ai+P2DJY8J1DF2ZhBbtTk331GL8Te1kJyDa/3h9Zx//87JWYYIf++nkunVBjUHnAdFQuv7AnGLr3Hq5VCB02GBp69rs5laUNN5alvu8rVxkpkt3TQM/vDYVPw/E7JmrzLT5257TLB1T4MDRUHaktfE0Ma83rq7FvIsIbVPPpHRESj/A9RoSTOQE0wkXplvoNUeh08mZScU47ozMJzexA8TLVYDd951RmxkAXzcOfpBk/mIxQim0PCgblmxVSKIZfRrcSJPLtFn ricotewechel@live.nl"
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+KOx7gJc/efoZUWWg1vXK1AgseRAivGplGlgGJX38XBD1X1hBH0vXwo2yu7Z/7WGfqDdG9ho0qtGXaL+37jm5cpQ52ZWBBSiZl5gAe6SIZehAjr5XVfW+uPesCpqmZjToW6OyVJxUST6t8BLj3A1vWl6dL3+RP5+LBYkH79TV+6fzEgc8CADQHnzkrprjFe6usOqojeUxUS/cfyWu8qUHRO9+J3rUMtgP4jqQW2WkxACL/4PzQaq1mAd/Zp3eTzB2XKKPRkKaPXa+OtJaVm7OrniqHI86f13pS0bDZIXxbYSyLpFH1QR+0tbkO7w5KjWXdlGP5t8vHc956ajGU3V3 larsjeurissen@hotmail.nl"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6+Ow7SExlzcVRxbCuo/9CeDt4/4QvlRVN5UPdRimdKQjwH5tLgWWsP874uwt4MwvLdwDLCoPg2TpMBqm93hVMbOnj12eYGWVTRvJOZyrI6/RQQaTaLT8Eyf0Bg94eGZ5d+fdN5giVLhzm7hi4DV53frGpILABrylGppx+ZYqDlbPZ3qDpszk+jfPuLU9D3ODImWIqrNmvL7BeCk6ruusA2n35d0zARBHpSM/ks2//OfBtlMHXY4yEXDHFk8baVQOJ3SFn6VN/MKVV2UIU70uIYcGGudyBpQHH5tPwcfzE8Q2+jCxn+tCC9PY5i9TFaUTYPFdcPo42qdI4IrwxN2+V thijsg.dejong@gmail.com"
     ];
   };
 
