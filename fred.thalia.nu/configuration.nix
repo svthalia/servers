@@ -104,6 +104,7 @@ in
     cd /persist/minecraft
     ${pkgs.jre_headless}/bin/java -Xmx8192M -Xms8192M -jar /persist/minecraft/server.jar nogui
   '');
+  users.users.minecraft.createHome = lib.mkForce false;
 
   users.users.minecraftadmin = {
     isNormalUser = true;
